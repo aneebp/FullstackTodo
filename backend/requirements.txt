@@ -1,0 +1,8 @@
+asgiref  #ASGI acts as a specification that allows Django and other frameworks to support asynchronous, real-time operations such as WebSockets
+Django
+django-cors-headers  #Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS).
+djangorestframework
+djangorestframework-simplejwt  #Simple JWT provides a JSON Web Token authentication backend for the Django REST Framework.
+PyJWT  #encode and decode JSON Web Tokens (JWT)
+pytz  #allows for date-time conversion and timezone calculations 
+python-dotenv
