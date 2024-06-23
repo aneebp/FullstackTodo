@@ -4,6 +4,7 @@ from .serializers import *
 from rest_framework import generics
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from .models import ToDo
+from django.contrib.auth.decorators import login_required
 
 
 class createUseView(generics.CreateAPIView):
@@ -18,13 +19,10 @@ class todolistCreate(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         return ToDo.objects.filter(auther=user)
-    
-    def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save(auther=self.request.user)
-        else:
-            print(serializer.errors)
 
+    def perform_create(self, serializer):
+        serializer.save(auther=self.request.user)
+        
 
 class todolistDelete(generics.DestroyAPIView):
     serializer_class = TodoSerializer

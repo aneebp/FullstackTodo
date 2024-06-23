@@ -15,4 +15,5 @@ class UserSerializer(serializers.ModelSerializer):
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDo
-        fields = "__all__"
+        fields = ['id', 'content', 'auther', 'created_at']
+        read_only_fields = ['auther', 'created_at']
