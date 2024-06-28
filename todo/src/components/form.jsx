@@ -1,8 +1,9 @@
 import api from "../api";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../style/form.css";
+import { toast } from "react-toastify";
 
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
@@ -12,6 +13,26 @@ function Form({ route, method }) {
   const navigate = useNavigate();
 
   const name = method === "Login" ? "Login" : "Register";
+  const footer = () => {
+    console.log("footer calling");
+    if (method === "Login") {
+      return (
+        <>
+          <span>
+            Don't have an account <Link to="/register">Sign Up</Link>
+          </span>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <span>
+            Have an account <Link to="/">Login</Link>
+          </span>
+        </>
+      );
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,12 +41,14 @@ function Form({ route, method }) {
 
     try {
       const res = await api.post(route, { username, password });
+      toast.success("successfully Registered");
       if (method === "Login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        toast.success("successfully Logined");
         navigate("/home");
       } else {
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -59,6 +82,7 @@ function Form({ route, method }) {
           placeholder="Password"
           required
         />
+        {footer()}
         <button className="form-button" type="submit" disabled={loading}>
           {loading ? "Loading..." : name}
         </button>
@@ -66,5 +90,4 @@ function Form({ route, method }) {
     </>
   );
 }
-
 export default Form;

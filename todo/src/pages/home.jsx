@@ -1,6 +1,11 @@
 import "../style/home.css";
 import api from "../api";
 import { useState, useEffect } from "react";
+import { IoIosAdd } from "react-icons/io";
+import { MdOutlineDelete } from "react-icons/md";
+import { toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [tasks, setTasks] = useState([]);
@@ -18,10 +23,11 @@ function Home() {
   };
 
   const deleteTask = async (id) => {
+    console.log("delete button clickked");
     try {
       const res = await api.delete(`api/todo/delete/${id}/`);
       if (res.status === 204) {
-        alert("You've completed your task");
+        toast.success("You've completed your task");
         getTasks(); // Fetch the updated list of tasks after deletion
       } else {
         alert("Failed to delete the task");
@@ -35,7 +41,7 @@ function Home() {
   const createTask = async (e) => {
     e.preventDefault();
     try {
-      const payload = { content: todo }; // Ensure this matches the expected payload
+      const payload = { content: todo };
       const res = await api.post("api/todo/", payload);
       if (res.status === 201) {
         console.log("Task is created");
@@ -73,7 +79,7 @@ function Home() {
                 placeholder="Add a new task..."
               />
               <button type="submit" className="add-button">
-                <i className="fa fa-plus-circle"></i>
+                <IoIosAdd />
               </button>
             </div>
           </form>
@@ -83,12 +89,10 @@ function Home() {
               {tasks.map((task) => (
                 <li key={task.id} className="todo">
                   {task.content}
-                  <button
-                    className="delete-btn"
+                  <MdOutlineDelete
                     onClick={() => deleteTask(task.id)}
-                  >
-                    <i className="fa fa-times"></i>
-                  </button>
+                    className="delete-icon"
+                  ></MdOutlineDelete>
                 </li>
               ))}
             </ul>

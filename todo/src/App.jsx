@@ -5,10 +5,12 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Home from "./pages/home";
 import ProtectedRoute from "./components/protectedRouter";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 function Logout() {
   localStorage.clear();
-  return <Navigate to="/login"></Navigate>;
+  return <Navigate to="/"></Navigate>;
 }
 
 function App() {
@@ -20,11 +22,12 @@ function App() {
             path="/home"
             element={
               <ProtectedRoute>
+                <ToastContainer></ToastContainer>
                 <Home></Home>
               </ProtectedRoute>
             }
           ></Route>
-          <Route path="/login" element={<Login></Login>}></Route>
+          <Route path="/" element={<Login></Login>}></Route>
           <Route path="/logout" element={<Logout></Logout>}></Route>
           <Route path="/register" element={<Register></Register>}></Route>
         </Routes>
